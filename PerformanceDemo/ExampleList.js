@@ -23,14 +23,17 @@ export default class ExampleList extends React.Component {
       this.boundRenderItem = this.renderItem.bind(this);
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return (!this.state.showAnimation && !nextState.showAnimation) // not showing the animation
+            || (this.state.shouldUpdateOnInterval || nextState.shouldUpdateOnInterval); // we are in the interval showing state
+    }
+
     setDataCallback = (count) => {
-        if (this.state.shouldUpdateOnInterval) {
-            this.setState({
-                currentInput: count,
-            }, () => {
-                this.setDataEfficient();
-            });
-        }
+        this.setState({
+            currentInput: count,
+        }, () => {
+            this.setDataEfficient();
+        });
     }
   
     // This is a grossly inefficient example used to illustrate a point. Don't write code like this!
